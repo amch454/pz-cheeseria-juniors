@@ -23,10 +23,9 @@ export type CartItemType = {
   amount: number;
 };
 
-
 const getCheeses = async (): Promise<CartItemType[]> =>
   await (await fetch(`api/cheeses`)).json();
-
+  
 const App = () => {
   const [cartOpen, setCartOpen] = useState(false);
   const [cartItems, setCartItems] = useState([] as CartItemType[]);
@@ -38,10 +37,6 @@ const App = () => {
 
   const getTotalItems = (items: CartItemType[]) =>
     items.reduce((ack: number, item) => ack + item.amount, 0);
-    
-  const handleItemClicked = (clickedItem: CartItemType) => {
-    console.log("Item " + clickedItem.title + " clicked.");
-  };
 
   const handleAddToCart = (clickedItem: CartItemType) => {
     setCartItems(prev => {
@@ -126,8 +121,7 @@ const App = () => {
       <Grid container spacing={3}>
         {data?.map(item => (
           <Grid item key={item.id} xs={12} sm={4}>
-            <Item item={item} handleAddToCart={handleAddToCart} 
-            handleItemClicked={handleItemClicked}/>
+            <Item item={item} handleAddToCart={handleAddToCart}/>
           </Grid>
         ))}
       </Grid>
