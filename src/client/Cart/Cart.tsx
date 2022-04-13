@@ -1,3 +1,4 @@
+import Button from '@material-ui/core/Button';
 import CartItem from './CartItem/CartItem';
 import { Wrapper } from './Cart.styles';
 import { CartItemType } from '../App';
@@ -8,9 +9,25 @@ type Props = {
   removeFromCart: (id: number) => void;
 };
 
+const handlePurchase = async (cartItems: CartItemType[]): Promise<JSON> => {
+  const requestOptions = {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(cartItems)
+  };
+  const response = await fetch(`api/purchase`, requestOptions);
+  const data = await response.json();
+  return data;
+};
+
 const Cart: React.FC<Props> = ({ cartItems, addToCart, removeFromCart }) => {
   const calculateTotal = (items: CartItemType[]) =>
     items.reduce((ack: number, item) => ack + item.amount * item.price, 0);
+  let price = calculateTotal(cartItems).toFixed(2)
+  let purchase = <></>;
+  if (price != '0.00') {
+    purchase = <Button onClick={() => handlePurchase(cartItems)}>Purchase</Button>
+  }
 
   return (
     <Wrapper>
@@ -24,7 +41,8 @@ const Cart: React.FC<Props> = ({ cartItems, addToCart, removeFromCart }) => {
           removeFromCart={removeFromCart}
         />
       ))}
-      <h2>Total: ${calculateTotal(cartItems).toFixed(2)}</h2>
+      <h2>Total: ${price}</h2>
+      {purchase}
     </Wrapper>
   );
 };

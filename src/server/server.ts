@@ -2,6 +2,7 @@ import express = require('express');
 import apiRouter from './routes';
 
 const app = express();
+app.use(express.json());
 
 app.use(express.static('public'));
 app.use(apiRouter);
