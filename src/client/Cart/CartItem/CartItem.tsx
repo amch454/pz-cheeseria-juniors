@@ -12,11 +12,11 @@ type Props = {
 
 const CartItem: React.FC<Props> = ({ item, addToCart, removeFromCart }) => (
   <Wrapper>
-    <div>
+    <div data-cy={`cart-item-${item.id}`}>
       <h3>{item.title}</h3>
       <div className='information'>
-        <p>Price: ${item.price}</p>
-        <p>Total: ${(item.amount * item.price).toFixed(2)}</p>
+        <p data-cy={`cart-item-price-${item.id}`}>Price: ${item.price}</p>
+        <p data-cy={`cart-item-total-${item.id}`}>Total: ${(item.amount * item.price).toFixed(2)}</p>
       </div>
       <div className='buttons'>
         <Button
@@ -27,7 +27,7 @@ const CartItem: React.FC<Props> = ({ item, addToCart, removeFromCart }) => (
         >
           -
         </Button>
-        <p>{item.amount}</p>
+        <p data-cy={`cart-item-amount-${item.id}`}>{item.amount}</p>
         <Button
           size='small'
           disableElevation

@@ -9,12 +9,12 @@ type Props = {
 
 const PurchaseItem: React.FC<Props> = ({ item }) => (
   <Wrapper>
-    <div>
+    <div data-cy={`purchase-item-${item.id}`}>
       <h3>{item.title}</h3>
       <div className='information'>
-        <p><b>Price:</b> ${item.price}</p>
-        <p><b>Quantity:</b> {item.amount}</p>
-        <p><b>Total:</b> ${(item.amount * item.price).toFixed(2)}</p>
+        <p data-cy={`purchase-item-price-${item.id}`}><b>Price:</b> ${item.price}</p>
+        <p data-cy={`purchase-item-amount-${item.id}`}><b>Amount:</b> {item.amount}</p>
+        <p data-cy={`purchase-item-total-${item.id}`}><b>Total:</b> ${(item.amount * item.price).toFixed(2)}</p>
       </div>
     </div>
     <img src={item.image} alt={item.title} />

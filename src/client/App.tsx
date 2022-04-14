@@ -94,7 +94,7 @@ const App = () => {
             justify="space-between"
             alignItems="center"
           >
-            <StyledButton onClick={() => setPurchasesOpen(true)}>
+            <StyledButton onClick={() => setPurchasesOpen(true)} data-cy="recent-purchases">
               <RestoreIcon />
               <Typography variant="subtitle2">
                 Recent Purchases
@@ -105,7 +105,7 @@ const App = () => {
               Welcome to Patient Zero's Cheeseria
             </HeaderTypography>
 
-            <StyledButton onClick={() => setCartOpen(true)}>
+            <StyledButton onClick={() => setCartOpen(true)} data-cy="open-cart">
               <Badge
                 badgeContent={getTotalItems(cartItems)}
                 color='error'
@@ -143,7 +143,7 @@ const App = () => {
         ))}
       </Grid>
       <Snackbar open={snackBarOpen} autoHideDuration={5000} onClose={handleSnackBarClose}>
-        <Alert onClose={handleSnackBarClose} severity="success">
+        <Alert onClose={handleSnackBarClose} severity="success" data-cy="success-message">
           Purchase successful!
         </Alert>
       </Snackbar>

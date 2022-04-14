@@ -4,38 +4,43 @@ const fs = require('fs');
 
 const router = express.Router();
 
+// Store all purchases in the backend
 var purchases: any = [];
+
+// Recent purchases (just the last items that were purchased)
+var recentPurchases: any = [];
 
 router.get('/api/cheeses', (req, res, next) => {
   res.json(cheeses);
 });
 
 router.get('/api/purchase', (req, res, next) => {
-  res.json(purchases);
+  res.json(recentPurchases);
 });
 
 router.post('/api/purchase', (req, res, next) => {
   try {
-    const new_purchases = req.body;
-    for (var new_purchase of new_purchases) {
-      var found_idx = -1;
+    const newPurchases = req.body;
+    recentPurchases = newPurchases;
+    for (var newPurchase of newPurchases) {
+      var foundIdx = -1;
       var i = 0;
       for (var purchase of purchases) {
-        if (new_purchase.id == purchase.id) {
-          found_idx = i;
+        if (newPurchase.id == purchase.id) {
+          foundIdx = i;
           break;
         }
         i++;
       }
-      if (found_idx != -1) {
-        purchases[found_idx].amount += new_purchase.amount;
+      if (foundIdx != -1) {
+        purchases[foundIdx].amount += newPurchase.amount;
       } else {
-        purchases.push(new_purchase);
+        purchases.push(newPurchase);
       }
     }
-    res.json({status: "true", msg: 'Saved purchases successfully'});
+    res.json({status: 'true', msg: 'Saved purchases successfully'});
   } catch(err) {
-    res.json({status: "false", msg: 'An error occurred: ' + err});
+    res.json({status: 'false', msg: 'An error occurred: ' + err});
   }
 });
 

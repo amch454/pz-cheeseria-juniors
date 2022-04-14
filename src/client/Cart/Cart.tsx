@@ -41,7 +41,7 @@ const Cart: React.FC<Props> = ({ cartItems, addToCart, removeFromCart, openSnack
   let price = calculateTotal(cartItems).toFixed(2)
   let purchase = <></>;
   if (price != '0.00') {
-    purchase = <Button onClick={() => handlePurchase(cartItems, removeFromCart, openSnackBar)}>Purchase</Button>
+    purchase = <Button onClick={() => handlePurchase(cartItems, removeFromCart, openSnackBar)} data-cy="purchase">Purchase</Button>
   }
   
   return (
@@ -56,7 +56,7 @@ const Cart: React.FC<Props> = ({ cartItems, addToCart, removeFromCart, openSnack
           removeFromCart={removeFromCart}
         />
       ))}
-      <h2>Total: ${price}</h2>
+      <h2 data-cy={`cart-total`}>Total: ${price}</h2>
       {purchase}
     </Wrapper>
   );
