@@ -9,7 +9,18 @@ type Props = {
   removeFromCart: (id: number) => void;
 };
 
-const handlePurchase = async (cartItems: CartItemType[]): Promise<JSON> => {
+const clearCart = async (cartItems: CartItemType[], removeFromCart: any): Promise<void> => {
+  cartItems.map(item => {
+    let amount = item.amount;
+    while (amount > 0) { 
+      removeFromCart(item.id);
+      amount--;
+    } 
+  });
+};
+
+const handlePurchase = async (cartItems: CartItemType[], removeFromCart: any): Promise<JSON> => {
+  await clearCart(cartItems, removeFromCart);
   const requestOptions = {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
@@ -17,6 +28,7 @@ const handlePurchase = async (cartItems: CartItemType[]): Promise<JSON> => {
   };
   const response = await fetch(`api/purchase`, requestOptions);
   const data = await response.json();
+  
   return data;
 };
 
@@ -26,9 +38,9 @@ const Cart: React.FC<Props> = ({ cartItems, addToCart, removeFromCart }) => {
   let price = calculateTotal(cartItems).toFixed(2)
   let purchase = <></>;
   if (price != '0.00') {
-    purchase = <Button onClick={() => handlePurchase(cartItems)}>Purchase</Button>
+    purchase = <Button onClick={() => handlePurchase(cartItems, removeFromCart)}>Purchase</Button>
   }
-
+  
   return (
     <Wrapper>
       <h2>Your Shopping Cart</h2>
