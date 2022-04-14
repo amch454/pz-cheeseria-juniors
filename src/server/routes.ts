@@ -15,24 +15,28 @@ router.get('/api/purchase', (req, res, next) => {
 });
 
 router.post('/api/purchase', (req, res, next) => {
-  const new_purchases = req.body;
-  for (var new_purchase of new_purchases) {
-    var found_idx = -1;
-    var i = 0;
-    for (var purchase of purchases) {
-      if (new_purchase.id == purchase.id) {
-        found_idx = i;
-        break;
+  try {
+    const new_purchases = req.body;
+    for (var new_purchase of new_purchases) {
+      var found_idx = -1;
+      var i = 0;
+      for (var purchase of purchases) {
+        if (new_purchase.id == purchase.id) {
+          found_idx = i;
+          break;
+        }
+        i++;
       }
-      i++;
+      if (found_idx != -1) {
+        purchases[found_idx].amount += new_purchase.amount;
+      } else {
+        purchases.push(new_purchase);
+      }
     }
-    if (found_idx != -1) {
-      purchases[found_idx].amount += new_purchase.amount;
-    } else {
-      purchases.push(new_purchase);
-    }
+    res.json({status: "true", msg: 'Saved purchases successfully'});
+  } catch(err) {
+    res.json({status: "false", msg: 'An error occurred: ' + err});
   }
-  res.json({status: "true", msg: 'Saved purchases successfully'});
 });
 
 export default router;
