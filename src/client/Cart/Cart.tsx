@@ -7,6 +7,7 @@ type Props = {
   cartItems: CartItemType[];
   addToCart: (clickedItem: CartItemType) => void;
   removeFromCart: (id: number) => void;
+  openSnackBar: () => void;
 };
 
 const clearCart = async (cartItems: CartItemType[], removeFromCart: any): Promise<void> => {
@@ -19,7 +20,7 @@ const clearCart = async (cartItems: CartItemType[], removeFromCart: any): Promis
   });
 };
 
-const handlePurchase = async (cartItems: CartItemType[], removeFromCart: any): Promise<JSON> => {
+const handlePurchase = async (cartItems: CartItemType[], removeFromCart: any, openSnackBar: any): Promise<void> => {
   await clearCart(cartItems, removeFromCart);
   const requestOptions = {
     method: 'POST',
@@ -29,16 +30,18 @@ const handlePurchase = async (cartItems: CartItemType[], removeFromCart: any): P
   const response = await fetch(`api/purchase`, requestOptions);
   const data = await response.json();
   
-  return data;
+  if (data.status == "true") {
+    openSnackBar();
+  }
 };
 
-const Cart: React.FC<Props> = ({ cartItems, addToCart, removeFromCart }) => {
+const Cart: React.FC<Props> = ({ cartItems, addToCart, removeFromCart, openSnackBar }) => {
   const calculateTotal = (items: CartItemType[]) =>
     items.reduce((ack: number, item) => ack + item.amount * item.price, 0);
   let price = calculateTotal(cartItems).toFixed(2)
   let purchase = <></>;
   if (price != '0.00') {
-    purchase = <Button onClick={() => handlePurchase(cartItems, removeFromCart)}>Purchase</Button>
+    purchase = <Button onClick={() => handlePurchase(cartItems, removeFromCart, openSnackBar)}>Purchase</Button>
   }
   
   return (

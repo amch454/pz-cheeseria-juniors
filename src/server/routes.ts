@@ -32,7 +32,7 @@ router.post('/api/purchase', (req, res, next) => {
       purchases.push(new_purchase);
     }
   }
-  res.json({success: true, msg: 'Saved purchases successfully'});
+  res.json({status: "true", msg: 'Saved purchases successfully'});
 });
 
 export default router;

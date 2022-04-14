@@ -10,6 +10,8 @@ import Grid from '@material-ui/core/Grid';
 import AddShoppingCartIcon from '@material-ui/icons/AddShoppingCart';
 import RestoreIcon from '@material-ui/icons/Restore';
 import Badge from '@material-ui/core/Badge';
+import Snackbar from '@material-ui/core/Snackbar';
+import Alert from '@material-ui/lab/Alert';
 // Styles
 import { Wrapper, StyledButton, StyledAppBar, HeaderTypography } from './App.styles';
 import { AppBar, Toolbar, Typography } from '@material-ui/core';
@@ -30,6 +32,7 @@ const getCheeses = async (): Promise<CartItemType[]> =>
 const App = () => {
   const [cartOpen, setCartOpen] = useState(false);
   const [purchasesOpen, setPurchasesOpen] = useState(false);
+  const [snackBarOpen, setSnackBarOpen] = useState(false);
   const [cartItems, setCartItems] = useState([] as CartItemType[]);
   const { data, isLoading, error } = useQuery<CartItemType[]>(
     'cheeses',
@@ -67,6 +70,14 @@ const App = () => {
         }
       }, [] as CartItemType[])
     );
+  };
+
+  const handleSnackBarOpen = () => {
+    setSnackBarOpen(true);
+  };
+
+  const handleSnackBarClose = (event?: React.SyntheticEvent | Event, reason?: string) => {
+    setSnackBarOpen(false);
   };
 
   if (isLoading) return <LinearProgress />;
@@ -116,6 +127,7 @@ const App = () => {
           cartItems={cartItems}
           addToCart={handleAddToCart}
           removeFromCart={handleRemoveFromCart}
+          openSnackBar={handleSnackBarOpen}
         />
       </Drawer>
       
@@ -130,6 +142,11 @@ const App = () => {
           </Grid>
         ))}
       </Grid>
+      <Snackbar open={snackBarOpen} autoHideDuration={5000} onClose={handleSnackBarClose}>
+        <Alert onClose={handleSnackBarClose} severity="success">
+          Purchase successful!
+        </Alert>
+      </Snackbar>
     </Wrapper>
 
   );
