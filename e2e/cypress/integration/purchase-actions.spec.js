@@ -12,7 +12,7 @@ context('Purchase Actions', () => {
     cy.get('[data-cy=add-to-cart-7]').click();
     // check that 3 items have been added to the cart
     cy.get('[data-cy=badge-count]').should('have.text', '3');
-    // open the cart and verify that both cheese are there, with the correct quantities and price
+    // open the cart and verify that both cheeses are there, with the correct quantities and price
     cy.get('[data-cy=open-cart]').click();
     cy.get('[data-cy=cart-item-5]')
     cy.get('[data-cy=cart-item-price-5]').should('have.text', 'Price: $88.15');
